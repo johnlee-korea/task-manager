@@ -1,0 +1,436 @@
+/* ===== 공통 변수 정의 ===== */
+:root {
+  /* 색상 */
+  --color-bg: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text: #1a202c;
+  --color-text-light: #718096;
+  --color-primary: #4a6cf7;
+  --color-primary-hover: #3b5ce4;
+  --color-danger: #e53e3e;
+  --color-danger-hover: #c53030;
+
+  /* 우선순위 색상 */
+  --color-high: #e53e3e;
+  --color-medium: #ecc94b;
+  --color-low: #48bb78;
+
+  /* 크기 */
+  --header-height: 60px;
+  --sidebar-width: 260px;
+  --border-radius: 8px;
+  --border-radius-sm: 4px;
+
+  /* 그림자 */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== 리셋 & 기본 스타일 ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ===== 유틸리티 ===== */
+.hidden {
+  display: none !important;
+}
+
+.required {
+  color: var(--color-danger);
+}
+
+/* ===== 버튼 공통 ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-secondary:hover {
+  background-color: #cbd5e0;
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: var(--color-danger-hover);
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-light);
+  transition: background-color 0.2s;
+}
+
+.btn-icon:hover {
+  background-color: var(--color-border);
+}
+
+/* ===== 헤더 ===== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 24px;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.header-date {
+  font-size: 14px;
+  color: var(--color-text-light);
+}
+
+/* 뷰 전환 탭 */
+.view-tabs {
+  display: flex;
+  gap: 4px;
+  background-color: var(--color-bg);
+  padding: 4px;
+  border-radius: var(--border-radius);
+}
+
+.view-tab {
+  padding: 6px 20px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-tab:hover {
+  color: var(--color-text);
+}
+
+.view-tab.active {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== 메인 레이아웃 ===== */
+.main-container {
+  display: flex;
+  height: calc(100vh - var(--header-height));
+}
+
+/* ===== 사이드바 ===== */
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  margin-bottom: 24px;
+}
+
+.sidebar-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+/* 우선순위 필터 */
+.filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter-item input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.filter-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.filter-high {
+  background-color: var(--color-high);
+}
+
+.filter-medium {
+  background-color: var(--color-medium);
+}
+
+.filter-low {
+  background-color: var(--color-low);
+}
+
+/* 오늘의 일정 요약 */
+.today-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.today-task-item {
+  padding: 8px 12px;
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--color-medium);
+  background-color: var(--color-bg);
+  font-size: 13px;
+}
+
+.today-task-item.priority-high {
+  border-left-color: var(--color-high);
+}
+
+.today-task-item.priority-low {
+  border-left-color: var(--color-low);
+}
+
+.empty-message {
+  font-size: 13px;
+  color: var(--color-text-light);
+  text-align: center;
+  padding: 16px 0;
+}
+
+/* ===== 메인 콘텐츠 ===== */
+.content {
+  flex: 1;
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+/* 캘린더 네비게이션 */
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.calendar-title {
+  font-size: 22px;
+  font-weight: 700;
+  min-width: 160px;
+}
+
+#btnToday {
+  margin-left: 8px;
+}
+
+/* ===== 토스트 알림 ===== */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  position: relative;
+  padding: 12px 36px 12px 16px;
+  border-radius: var(--border-radius);
+  background-color: var(--color-text);
+  color: #ffffff;
+  font-size: 14px;
+  box-shadow: var(--shadow-lg);
+  animation: toastIn 0.3s ease;
+  pointer-events: auto;
+  max-width: 360px;
+}
+
+.toast.toast-out {
+  animation: toastOut 0.3s ease forwards;
+}
+
+/* 토스트 닫기 버튼 */
+.toast-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.toast-close:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* 리마인더 토스트 카드 */
+.toast-reminder-card {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-left: 4px solid var(--color-primary);
+  padding: 14px 36px 14px 14px;
+}
+
+.toast-reminder-card .toast-close {
+  color: var(--color-text-light);
+}
+
+.toast-reminder-card .toast-close:hover {
+  background-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.toast-reminder {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.toast-reminder-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.toast-reminder-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-reminder-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.toast-reminder-title.priority-high {
+  color: var(--color-high);
+}
+
+.toast-reminder-title.priority-medium {
+  color: #b7791f;
+}
+
+.toast-reminder-title.priority-low {
+  color: #276749;
+}
+
+.toast-reminder-time {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+
+/* 일반 토스트 타입별 색상 */
+.toast.toast-success {
+  background-color: #276749;
+}
+
+.toast.toast-error {
+  background-color: var(--color-danger);
+}
+
+.toast.toast-info {
+  background-color: var(--color-primary);
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(40px); }
+}
