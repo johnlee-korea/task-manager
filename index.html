@@ -5,10 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task Manager - 업무 일정 관리</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
   <link rel="stylesheet" href="css/calendar.css">
   <link rel="stylesheet" href="css/modal.css">
 </head>
 <body>
+  <!-- ==================== 로그인 화면 ==================== -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <div class="login-icon">🔒</div>
+      <h2 class="login-title" id="loginTitle">로그인</h2>
+      <p class="login-subtitle" id="loginSubtitle">비밀번호를 입력해 주세요.</p>
+      <form class="login-form" id="loginForm">
+        <div class="login-input-group">
+          <label for="loginPassword">비밀번호</label>
+          <input type="password" id="loginPassword" placeholder="비밀번호를 입력하세요" required>
+        </div>
+        <div class="login-input-group hidden" id="loginConfirmGroup">
+          <label for="loginPasswordConfirm">비밀번호 확인</label>
+          <input type="password" id="loginPasswordConfirm" placeholder="비밀번호를 다시 입력하세요">
+        </div>
+        <div class="login-error" id="loginError"></div>
+        <button type="submit" class="login-btn" id="loginBtnText">로그인</button>
+      </form>
+      <div class="login-footer">
+        <button class="login-footer-link" id="loginResetBtn">비밀번호 재설정</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== 헤더 영역 ==================== -->
   <header class="header">
     <div class="header-left">
@@ -203,6 +228,7 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <!-- JS 파일 (2단계에서 구현) -->
+  <script src="js/login.js"></script>
   <script src="js/store.js"></script>
   <script src="js/calendar.js"></script>
   <script src="js/modal.js"></script>

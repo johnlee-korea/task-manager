@@ -74,6 +74,9 @@
     });
   }
 
-  // DOM 로드 후 초기화
-  document.addEventListener('DOMContentLoaded', init);
+  // DOM 로드 후 로그인 → 앱 초기화
+  document.addEventListener('DOMContentLoaded', function () {
+    Login.init();
+    init();
+  });
 })();
