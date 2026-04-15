@@ -6,8 +6,9 @@
 var Login = (function () {
 
   var STORAGE_KEY = 'taskmanager_pw';
+  var _onSuccess = null;
 
-  // --- 간단한 해시 함수 (SHA-256 대용, 클라이언트 전용) ---
+  // --- 간단한 해시 함수 (클라이언트 전용) ---
   function _simpleHash(str) {
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
@@ -20,7 +21,8 @@ var Login = (function () {
 
   /** 비밀번호가 설정되어 있는지 확인 */
   function isPasswordSet() {
-    return localStorage.getItem(STORAGE_KEY) !== null;
+    var val = localStorage.getItem(STORAGE_KEY);
+    return val !== null && val !== '';
   }
 
   /** 비밀번호 저장 */
@@ -33,8 +35,10 @@ var Login = (function () {
     return localStorage.getItem(STORAGE_KEY) === _simpleHash(pw);
   }
 
-  /** 로그인 화면 초기화 */
-  function init() {
+  /** 로그인 화면 초기화 - onSuccess 콜백을 받아 로그인 성공 시 실행 */
+  function init(onSuccess) {
+    _onSuccess = onSuccess || null;
+
     var overlay = document.getElementById('loginOverlay');
     var form = document.getElementById('loginForm');
     var title = document.getElementById('loginTitle');
@@ -113,17 +117,31 @@ var Login = (function () {
       }
     });
 
-    // 비밀번호 입력란에 포커스
+    // 로그인 오버레이 표시 & 포커스
+    overlay.classList.remove('hidden');
     pwInput.focus();
   }
 
   /** 로그인 성공 시 앱 표시 */
   function _showApp(overlay) {
+    // 앱 컨테이너 표시
+    var appContainer = document.getElementById('appContainer');
+    appContainer.classList.remove('hidden');
+
+    // 로그인 오버레이 페이드아웃
     overlay.style.opacity = '0';
     overlay.style.transition = 'opacity 0.3s ease';
     setTimeout(function () {
       overlay.classList.add('hidden');
+      overlay.style.opacity = '';
+      overlay.style.transition = '';
     }, 300);
+
+    // 로그인 성공 콜백 실행 (앱 초기화)
+    if (_onSuccess) {
+      _onSuccess();
+      _onSuccess = null;
+    }
   }
 
   return {
