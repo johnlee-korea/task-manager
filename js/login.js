@@ -7,6 +7,7 @@ var Login = (function () {
 
   var STORAGE_KEY = 'taskmanager_pw';
   var _onSuccess = null;
+  var _bound = false; // 이벤트 중복 등록 방지
 
   // --- 간단한 해시 함수 (클라이언트 전용) ---
   function _simpleHash(str) {
@@ -14,7 +15,7 @@ var Login = (function () {
     for (var i = 0; i < str.length; i++) {
       var char = str.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // 32비트 정수 변환
+      hash = hash | 0; // 32비트 정수 변환
     }
     return hash.toString(36);
   }
@@ -70,57 +71,63 @@ var Login = (function () {
     // 로그인 오버레이 표시
     overlay.classList.remove('hidden');
 
-    // 폼 제출 처리
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      errorEl.textContent = '';
-      pwInput.classList.remove('input-error');
-      if (pwConfirm) pwConfirm.classList.remove('input-error');
+    // 이벤트 중복 등록 방지
+    if (!_bound) {
+      _bound = true;
 
-      var pw = pwInput.value;
+      // 폼 제출 처리
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        errorEl.textContent = '';
+        pwInput.classList.remove('input-error');
+        if (pwConfirm) pwConfirm.classList.remove('input-error');
 
-      if (isSetup) {
-        // 비밀번호 설정 모드
-        var pwc = pwConfirm.value;
+        var pw = pwInput.value;
 
-        if (pw.length < 4) {
-          errorEl.textContent = '비밀번호는 4자 이상이어야 합니다.';
-          pwInput.classList.add('input-error');
-          pwInput.focus();
-          return;
-        }
+        if (isSetup) {
+          // 비밀번호 설정 모드
+          var pwc = pwConfirm.value;
 
-        if (pw !== pwc) {
-          errorEl.textContent = '비밀번호가 일치하지 않습니다.';
-          pwConfirm.classList.add('input-error');
-          pwConfirm.focus();
-          return;
-        }
+          if (pw.length < 4) {
+            errorEl.textContent = '비밀번호는 4자 이상이어야 합니다.';
+            pwInput.classList.add('input-error');
+            pwInput.focus();
+            return;
+          }
 
-        setPassword(pw);
-        _showApp(overlay);
-      } else {
-        // 로그인 모드
-        if (verify(pw)) {
+          if (pw !== pwc) {
+            errorEl.textContent = '비밀번호가 일치하지 않습니다.';
+            pwConfirm.classList.add('input-error');
+            pwConfirm.focus();
+            return;
+          }
+
+          setPassword(pw);
           _showApp(overlay);
         } else {
-          errorEl.textContent = '비밀번호가 올바르지 않습니다.';
-          pwInput.classList.add('input-error');
-          pwInput.value = '';
-          pwInput.focus();
+          // 로그인 모드
+          if (verify(pw)) {
+            _showApp(overlay);
+          } else {
+            errorEl.textContent = '비밀번호가 올바르지 않습니다.';
+            pwInput.classList.add('input-error');
+            pwInput.value = '';
+            pwInput.focus();
+          }
         }
-      }
-    });
+      });
 
-    // 비밀번호 재설정 버튼
-    resetBtn.addEventListener('click', function () {
-      if (confirm('비밀번호를 재설정하면 기존 비밀번호가 삭제됩니다.\n계속하시겠습니까?')) {
-        localStorage.removeItem(STORAGE_KEY);
-        location.reload();
-      }
-    });
+      // 비밀번호 재설정 버튼
+      resetBtn.addEventListener('click', function () {
+        if (confirm('비밀번호를 재설정하면 기존 비밀번호가 삭제됩니다.\n계속하시겠습니까?')) {
+          localStorage.removeItem(STORAGE_KEY);
+          location.reload();
+        }
+      });
+    }
 
-    // 비밀번호 입력란에 포커스
+    // 비밀번호 입력란 초기화 및 포커스
+    pwInput.value = '';
     pwInput.focus();
   }
 
@@ -142,8 +149,14 @@ var Login = (function () {
     }, 300);
   }
 
+  /** 로그아웃 - 로그인 화면으로 복귀 */
+  function logout() {
+    location.reload();
+  }
+
   return {
-    init: init
+    init: init,
+    logout: logout
   };
 
 })();

@@ -12,6 +12,11 @@
     Modal.init();
     TaskNotification.init();
 
+    // 로그아웃 버튼
+    document.getElementById('btnLogout').addEventListener('click', function () {
+      Login.logout();
+    });
+
     // 이벤트 바인딩
     _bindHeaderEvents();
     _bindSidebarEvents();
