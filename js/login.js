@@ -67,6 +67,9 @@ var Login = (function () {
       resetBtn.classList.remove('hidden');
     }
 
+    // 로그인 오버레이 표시
+    overlay.classList.remove('hidden');
+
     // 폼 제출 처리
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -117,18 +120,19 @@ var Login = (function () {
       }
     });
 
-    // 로그인 오버레이 표시 & 포커스
-    overlay.classList.remove('hidden');
+    // 비밀번호 입력란에 포커스
     pwInput.focus();
   }
 
   /** 로그인 성공 시 앱 표시 */
   function _showApp(overlay) {
-    // 앱 컨테이너 표시
-    var appContainer = document.getElementById('appContainer');
-    appContainer.classList.remove('hidden');
+    // 앱 초기화 콜백 먼저 실행 (화면 전환 전에 콘텐츠 준비)
+    if (_onSuccess) {
+      _onSuccess();
+      _onSuccess = null;
+    }
 
-    // 로그인 오버레이 페이드아웃
+    // 로그인 오버레이 페이드아웃 후 제거
     overlay.style.opacity = '0';
     overlay.style.transition = 'opacity 0.3s ease';
     setTimeout(function () {
@@ -136,12 +140,6 @@ var Login = (function () {
       overlay.style.opacity = '';
       overlay.style.transition = '';
     }, 300);
-
-    // 로그인 성공 콜백 실행 (앱 초기화)
-    if (_onSuccess) {
-      _onSuccess();
-      _onSuccess = null;
-    }
   }
 
   return {
